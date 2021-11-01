@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'API Gateway for PCI Services
+
+  '
+Parameters:
+  Environment:
+    Type: String
+    Default: staging
+    AllowedValues:
+    - development
+    - beta
+    - staging
+    - production
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  HealthCheckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HealthCheckFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /health-check
+            Method: get
+            RestApiId:
+              Ref: API
+  API:
+    Type: AWS::Serverless::Api
+    Description:
+      Fn::Sub: PCI ${Environment} API Gateway for PCI Services
+    Properties:
+      StageName:
+        Fn::Sub: PCIApiGateway-${Environment}
+Outputs:
+  API:
+    Description: API Gateway for PCI Services
+    Value:
+      Ref: API
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-${Environment}-pci-api-gateway
+  Environment:
+    Description: Current Stack Environment
+    Value:
+      Fn::Sub: ${Environment}
