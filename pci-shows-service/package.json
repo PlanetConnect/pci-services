@@ -7,6 +7,6 @@
   "author": "SAM CLI",
   "license": "MIT",
   "scripts": {
-    "test": "../src/dependencies/nodejs/node_modules/.bin/mocha"
+    "test": "src/dependencies/nodejs/node_modules/.bin/mocha src/**/tests/unit/*.test.js"
   }
 }
