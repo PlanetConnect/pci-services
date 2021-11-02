@@ -1,22 +1,20 @@
 "use strict";
 
-const app = require("../../app.js");
-const chai = require("chai");
-const expect = chai.expect;
+const app = require("../../app");
+
 var event, context;
 
-describe("Tests index", function () {
+describe("Health check tests", function () {
   it("verifies successful response", async () => {
     const result = await app.lambdaHandler(event, context);
 
-    expect(result).to.be.an("object");
-    expect(result.statusCode).to.equal(200);
-    expect(result.body).to.be.an("string");
+    expect(result).toBeInstanceOf(Object);
+    expect(result.statusCode).toBe(200);
+    expect(typeof result.body).toBe("string");
 
     let response = JSON.parse(result.body);
 
-    expect(response).to.be.an("object");
-    expect(response.message).to.be.equal("hello world");
-    // expect(response.location).to.be.an("string");
+    expect(response).toBeInstanceOf(Object);
+    expect(typeof response.message).toBe("string");
   });
 });
