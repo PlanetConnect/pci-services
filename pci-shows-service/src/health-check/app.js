@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
+
 let response;
 
 /**
@@ -19,7 +20,7 @@ exports.lambdaHandler = async (event, context) => {
     response = {
       statusCode: 200,
       body: JSON.stringify({
-        message: "API OK",
+        message: "SERVICE OK!",
         uuid,
       }),
     };

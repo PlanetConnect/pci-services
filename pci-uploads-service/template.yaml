@@ -49,11 +49,23 @@ Resources:
       LicenseInfo: "MIT"
       RetentionPolicy: Retain
 
+  APICertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "${ServiceName}.api.planetconnect.com"
+      ValidationMethod: DNS
+
   API:
     Type: AWS::Serverless::Api
     Description: !Sub "API-Gateway-${Environment} for ${ServiceName} Service"
     Properties:
       StageName: !Sub "PCIApiGateway-${Environment}-${ServiceName}"
+      EndpointConfiguration: REGIONAL
+      Domain:
+        DomainName: !Sub "${ServiceName}.api.planetconnect.com"
+        CertificateArn: !Ref APICertificate
+        Route53:
+          HostedZoneId: ZHTRA785NPH0R
 
 Outputs:
   API:
@@ -67,3 +79,9 @@ Outputs:
   ServiceName:
     Description: "Service Name"
     Value: !Sub "${ServiceName}"
+  Domain:
+    Description: "Domain of the Service"
+    Value: !Sub "https://${ServiceName}.api.planetconnect.com"
+  ACMCertificate:
+    Description: "The ACM Certificate ARN of the Service"
+    Value: !Ref APICertificate
