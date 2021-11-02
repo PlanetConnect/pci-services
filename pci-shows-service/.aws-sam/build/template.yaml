@@ -1,29 +1,32 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: 'API Gateway for PCI Services
+Description: 'PCI Application Service
 
   '
 Parameters:
+  ServiceName:
+    Type: String
   Environment:
     Type: String
-    Default: staging
+    Default: development
     AllowedValues:
     - development
-    - beta
     - staging
-    - production
+    - beta
 Globals:
   Function:
     Timeout: 3
+    Handler: app.lambdaHandler
+    Runtime: nodejs14.x
+    Architectures:
+    - x86_64
+    Layers:
+    - Ref: AppLayers
 Resources:
   HealthCheckFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: HealthCheckFunction
-      Handler: app.lambdaHandler
-      Runtime: nodejs14.x
-      Architectures:
-      - x86_64
       Events:
         HelloWorld:
           Type: Api
@@ -32,22 +35,40 @@ Resources:
             Method: get
             RestApiId:
               Ref: API
+  AppLayers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName:
+        Fn::Sub: pci-${Environment}-${ServiceName}-dependencies
+      Description:
+        Fn::Sub: Dependencies for pci-${Environment}-${ServiceName}-service
+      ContentUri: ../../src/dependencies
+      CompatibleRuntimes:
+      - nodejs14.x
+      CompatibleArchitectures:
+      - x86_64
+      LicenseInfo: MIT
+      RetentionPolicy: Retain
   API:
     Type: AWS::Serverless::Api
     Description:
-      Fn::Sub: PCI ${Environment} API Gateway for PCI Services
+      Fn::Sub: API-Gateway-${Environment} for ${ServiceName} Service
     Properties:
       StageName:
-        Fn::Sub: PCIApiGateway-${Environment}
+        Fn::Sub: PCIApiGateway-${Environment}-${ServiceName}
 Outputs:
   API:
-    Description: API Gateway for PCI Services
+    Description: API Gateway for the PCI Service
     Value:
       Ref: API
     Export:
       Name:
-        Fn::Sub: ${AWS::StackName}-${Environment}-pci-api-gateway
+        Fn::Sub: ${AWS::StackName}-api-gateway
   Environment:
-    Description: Current Stack Environment
+    Description: Stack Environment
     Value:
       Fn::Sub: ${Environment}
+  ServiceName:
+    Description: Service Name
+    Value:
+      Fn::Sub: ${ServiceName}

@@ -1,33 +1,11 @@
 version = 0.1
-[default]
-[default.deploy]
-[default.deploy.parameters]
-stack_name = "pci-apigateway"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ik2h1h0nlnqs"
-s3_prefix = "pci-apigateway"
-region = "us-east-1"
-capabilities = "CAPABILITY_IAM"
-parameter_overrides = "Environment=\"staging\""
-image_repositories = []
-
-[staging]
-[staging.deploy]
-[staging.deploy.parameters]
-stack_name = "pci-staging-apigateway"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ik2h1h0nlnqs"
-s3_prefix = "pci-staging-apigateway"
-region = "us-east-1"
-capabilities = "CAPABILITY_IAM"
-parameter_overrides = "Environment=\"staging\""
-image_repositories = []
-
 [development]
 [development.deploy]
 [development.deploy.parameters]
-stack_name = "pci-development-apigateway"
+stack_name = "pci-development-shows-service"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ik2h1h0nlnqs"
-s3_prefix = "pci-development-apigateway"
+s3_prefix = "pci-development-shows-service"
 region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "Environment=\"development\""
+parameter_overrides = "ServiceName=\"shows\" Environment=\"development\""
 image_repositories = []

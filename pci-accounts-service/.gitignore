@@ -54,6 +54,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+src/dependencies/nodejs/node_modules
 
 # Typescript v1 declaration files
 typings/
@@ -125,5 +126,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+### SAM ###
+
+# AWS SAM Built Files
+.aws-sam
 
 # End of https://www.gitignore.io/api/osx,node,linux,windows

@@ -1,0 +1,12 @@
+{
+  "name": "pci-roles-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "repository": "",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "scripts": {
+    "test": ""
+  }
+}
