@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  PCI Application Service
+  PCI Application Service - API Unifier
 
 Parameters:
   ServiceName:
@@ -52,17 +52,17 @@ Resources:
   API:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: !Sub "PCIApiGateway-${ServiceName}-${Environment}"
+      StageName: !Sub "PCIApiGateway-${Environment}"
       EndpointConfiguration: REGIONAL
       Domain:
-        DomainName: !Sub "${ServiceName}-${Environment}.{{resolve:ssm:pci-api-services-domain:1}}"
+        DomainName: !Sub "${Environment}.{{resolve:ssm:pci-api-services-domain:1}}"
         CertificateArn: "{{resolve:ssm:pci-api-services-cert-arn:1}}"
         Route53:
           HostedZoneId: "{{resolve:ssm:pci-domain-hosted-zone-id:1}}"
 
 Outputs:
   API:
-    Description: "API Gateway for the PCI Service"
+    Description: "Unified API Gateway for PCI Services"
     Value: !Ref API
     Export:
       Name: !Sub "${AWS::StackName}-api-gateway"

@@ -39,8 +39,8 @@ Resources:
   AppLayers:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: !Sub "pci-${Environment}-${ServiceName}-dependencies"
-      Description: !Sub "Dependencies for pci-${Environment}-${ServiceName}-service"
+      LayerName: !Sub "pci-${ServiceName}-${Environment}-dependencies"
+      Description: !Sub "Dependencies for pci-${ServiceName}-${Environment}-service"
       ContentUri: src/dependencies/
       CompatibleRuntimes:
         - nodejs14.x
@@ -49,23 +49,16 @@ Resources:
       LicenseInfo: "MIT"
       RetentionPolicy: Retain
 
-  APICertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub "${ServiceName}.api.planetconnect.com"
-      ValidationMethod: DNS
-
   API:
     Type: AWS::Serverless::Api
-    Description: !Sub "API-Gateway-${Environment} for ${ServiceName} Service"
     Properties:
-      StageName: !Sub "PCIApiGateway-${Environment}-${ServiceName}"
+      StageName: !Sub "PCIApiGateway-${ServiceName}-${Environment}"
       EndpointConfiguration: REGIONAL
       Domain:
-        DomainName: !Sub "${ServiceName}.api.planetconnect.com"
-        CertificateArn: !Ref APICertificate
+        DomainName: !Sub "${ServiceName}-${Environment}.{{resolve:ssm:pci-api-services-domain:1}}"
+        CertificateArn: "{{resolve:ssm:pci-api-services-cert-arn:1}}"
         Route53:
-          HostedZoneId: ZHTRA785NPH0R
+          HostedZoneId: "{{resolve:ssm:pci-domain-hosted-zone-id:1}}"
 
 Outputs:
   API:
@@ -79,9 +72,3 @@ Outputs:
   ServiceName:
     Description: "Service Name"
     Value: !Sub "${ServiceName}"
-  Domain:
-    Description: "Domain of the Service"
-    Value: !Sub "https://${ServiceName}.api.planetconnect.com"
-  ACMCertificate:
-    Description: "The ACM Certificate ARN of the Service"
-    Value: !Ref APICertificate

@@ -1,0 +1,11 @@
+version = 0.1
+[development]
+[development.deploy]
+[development.deploy.parameters]
+stack_name = "pci-abstracts-development-service"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ik2h1h0nlnqs"
+s3_prefix = "pci-abstracts-development-service"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "ServiceName=\"abstracts\" Environment=\"development\""
+image_repositories = []
