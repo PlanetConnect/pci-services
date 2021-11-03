@@ -1,18 +1,1 @@
-{
-  "name": "pci-api-gateway",
-  "version": "1.0.0",
-  "description": "",
-  "main": "",
-  "repository": "",
-  "author": "SAM CLI",
-  "license": "MIT",
-  "scripts": {
-    "test": "src/dependencies/nodejs/node_modules/.bin/jest src/**/tests/unit/*.test.js",
-    "install": "cd src/dependencies/nodejs && npm install"
-  },
-  "jest": {
-    "modulePaths": [
-      "<rootDir>/src/dependencies/nodejs/node_modules/"
-    ]
-  }
-}
+
